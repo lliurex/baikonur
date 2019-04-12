@@ -1,4 +1,9 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#
+#   Copyright 2019, Enrique Medina Gremaldos <quiqueiii@gmail.com>
+#
+#   GPLv3
 
 import requests
 import json
