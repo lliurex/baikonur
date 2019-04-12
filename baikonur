@@ -104,7 +104,8 @@ def main():
                 data=deb822.Changes(f)
                 f.close()
                 
-                pkg["urgency"]=URGENCY[data["Urgency"]]
+                # punish bad-formatted packages
+                pkg["urgency"]=(URGENCY.get(data["Urgency"]) or 3)
                 
                 for file in data["files"]:
                     pkg["files"].append([file["name"],False,file["md5sum"]])
