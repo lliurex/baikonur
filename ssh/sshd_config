@@ -1,0 +1,20 @@
+# Secure defaults
+Protocol 2
+PermitEmptyPasswords no
+PermitRootLogin no
+
+AllowGroups lliurex
+
+UseDNS no
+
+# Limited access
+X11Forwarding no
+AllowTcpForwarding yes
+
+# Force sftp and chroot jail
+Subsystem sftp internal-sftp
+#ForceCommand internal-sftp
+#ChrootDirectory %h
+
+# Enable this for more logs
+#LogLevel VERBOSE

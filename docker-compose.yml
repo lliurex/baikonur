@@ -1,0 +1,90 @@
+version: '3'
+services:
+  inbox:
+      container_name: inbox_service
+      image: inbox
+      build: 
+          context: ./ssh
+      ports:
+          - "20:22"
+      volume:
+          - type: volume
+            source: inbox_folder
+            target: /inbox
+      restart: always
+      networks:
+          - inboxnet
+
+  baikonur:
+      container_name: baikonur_service
+      image: baikonur
+      build:
+          context: ./baikonur
+      volume:
+          - type: volume
+            source: inbox_folder
+            target: /srv/autobuildinbox
+          - type: volume
+            source: build_folder
+            target: /srv/autobuildfolder
+      networks:
+          - autobuildnet
+
+  jenkins:
+      container_name: jenkins_service
+      image: jenkins/jenkins:lts
+      ports:
+          - "443:8080"
+          - "50000:50000"
+      volumes:
+          - type: volume
+            source: jenkins_config
+            target: /var/jenkins_home
+      restart: always
+      networks:
+          - autobuildnet
+
+  repobuilder:
+      container_name: repobuilder_service
+      image: repobuilder
+      build:
+          context: ./repobuilder
+      volume:
+          - type: volume
+            source: repository
+            target: /srv/repository
+          - type: volume
+            source: build_folder
+            target: /srv/autobuildfolder
+      networks:
+          - autobuildnet
+
+  web:
+      container_name: repoweb
+      image: httpd:latest
+      port:
+          - "80:80"
+      volumes:
+          - type: volume
+            source: repository
+            target: /usr/local/apache2/htdocs/
+          - type: volume
+            source: logs_folder
+            target: /usr/local/apache2/htdocs/buildlogs/
+      networks:
+          - webnet
+            
+volumes:
+    jenkins_config:
+    inbox_folder:
+    build_folder:
+    logs_folder:
+    repository:
+networks:
+    inboxnet:
+        driver: bridge
+        config:
+            - subnet: 172.16.0.0/30
+              gateway: 172.16.0.1
+    autobuildnet:
+    webnet:
