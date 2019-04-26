@@ -1,2 +1,4 @@
-Match address 172.17.0.0/16
+Match address 172.17.0.0/30
+    PasswordAuthentication no
+Match address 172.17.0.4/30
     PasswordAuthentication no

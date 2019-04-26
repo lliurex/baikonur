@@ -1,3 +1,3 @@
-iptables -A INPUT -p tcp --source=172.17.0.0/16 --destination=172.17.0.0/16 --dport=22 -j ACCEPT
-iptables -A INPUT -m tcp -p tcp --tcp-flags ACK ACK --source=172.17.0.0/16 --destination=172.17.0.0/16 -j ACCEP
-iptables -A INPUT --source=172.17.0.0/16 --destination=172.17.0.0/16 -j DROP
+iptables -A INPUT -p tcp --source=172.17.0.0/30 --destination=172.17.0.0/30 --dport=22 -j ACCEPT
+iptables -A INPUT -m tcp -p tcp --tcp-flags ACK ACK --source=172.17.0.0/30 --destination=172.17.0.0/30 -j ACCEP
+iptables -A INPUT --source=172.17.0.0/30 --destination=172.17.0.0/30 -j DROP
