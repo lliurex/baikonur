@@ -1,0 +1,29 @@
+Codename: {{CODANAME}}                                                                                                                                                                             
+Version: 19.04
+Origin: LliureX
+Label: LliureX
+Description: LliureX Distribution Packages
+Architectures: i386 amd64 source
+Components: main restricted universe multiverse preschool
+UDebComponents: main
+Update: -
+
+Codename: {{CODANAME}}-updates
+Version: 19.04
+Origin: LliureX
+Label: LliureX
+Description: LliureX Distribution Packages
+Architectures: i386 amd64 source
+Components: main restricted universe multiverse
+UDebComponents: main
+Update: -
+
+Codename: {{CODANAME}}-security
+Version: 19.04
+Origin: LliureX
+Label: LliureX
+Description: LliureX Distribution Packages
+Architectures: i386 amd64 source
+Components: main restricted universe multiverse
+UDebComponents: main
+Update: -
