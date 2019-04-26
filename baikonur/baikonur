@@ -1,0 +1,202 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#
+#   Copyright 2019, Enrique Medina Gremaldos <quiqueiii@gmail.com>
+#
+#   GPLv3
+
+import requests
+import json
+import pyinotify
+import time
+import datetime
+import queue
+import deb822
+import os
+import shutil
+import tempfile
+import glob
+
+user = 'adminuser'
+passw = 'password'
+
+with open('/run/secrets/jenkins-user','r') as fd:
+    user = fd.readline().strip()
+
+with open('/run/secrets/jenkins-pass','r') as fd:
+    passw = fd.readline().strip()
+
+auth = (user,passw)
+job_name = 'autobuilder_'
+server_url = 'http://jenkins_service/'
+jobs = []
+queue_available = []
+
+
+INBOX="/srv/autobuildinbox"
+BUILD="/srv/autobuildfolder"
+URGENCY={"high":0,"medium":1,"low":2}
+
+incoming_files=queue.Queue()
+incoming_packages={}
+unknown_files=[]
+outgoing_packages=queue.PriorityQueue()
+
+def get_auth_tokens():
+    crumb = requests.get('http://{0}:{1}@jenkins_service/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'.format(user,passw)).text
+    return {'Jenkins-Crumb':crumb.split(':')[1]}
+
+
+def jobs_autobuilder(headers):
+    jobs = []
+    build = json.loads(requests.post('{0}api/json/?tree=jobs[name]'.format(server_url),auth=auth ,headers=headers).text)
+    for x in build['jobs']:
+        if x['name'].startswith(job_name):
+            jobs.append(x['name'])
+    return jobs
+
+def run_build(headers, autobuilder_instance, build_path):
+    changes_file = glob.glob(os.path.join(build_path,'*.dsc'))[0]
+    package_description = deb822.Changes(open(changes_file))
+    source_name = package_description['Source']
+    version_package = package_description['Version']
+    auth = (user, passw)
+    print("ejecutando la tarea de {0} en {1}".format(changes_file, autobuilder_instance) )
+    parameters = [('PACKAGE_SOURCE',source_name),('VERSION',version_package),('BUILD_PATH',build_path)]
+    build = requests.post('{0}/job/{1}/buildWithParameters'.format(server_url,autobuilder_instance), auth=auth, headers=headers,data=parameters)
+
+def on_close_file(event):
+    
+    #not interested in dirs
+    if (not event.dir):
+        
+        #file modified
+        if (event.mask==pyinotify.IN_CLOSE_WRITE):
+            print(" new file:"+str(event.name))
+            incoming_files.put(event.name)
+
+    
+def main():
+    
+    start=datetime.datetime.now()
+    
+    #preload incoming files
+    for file in os.listdir(INBOX):
+        if (os.path.isfile(INBOX+"/"+file)):
+            incoming_files.put(file)
+    
+    wm = pyinotify.WatchManager()
+    wm.add_watch(INBOX, pyinotify.ALL_EVENTS,proc_fun=on_close_file)
+    notifier=pyinotify.Notifier(wm)
+    
+    trabajo_contador = 0
+    while True:
+        
+        #check for inotify events (waiting 100ms)
+        if (notifier.check_events(100)):
+            notifier.read_events()
+            notifier.process_events()
+        
+        
+        #check for packages
+        while (incoming_files.qsize()>0):
+            name=incoming_files.get()
+            
+            #check extension
+            if (name.endswith(".changes")):
+                pkg={}
+                pkg["files"]=[]
+                
+                f=open(INBOX+"/"+name)
+                data=deb822.Changes(f)
+                f.close()
+                
+                # punish bad-formatted packages
+                pkg["urgency"]=(URGENCY.get(data["Urgency"]) or 3)
+                
+                for file in data["files"]:
+                    pkg["files"].append([file["name"],False,file["md5sum"]])
+                
+                print("* new package:"+name)
+                incoming_packages[name]=pkg
+                
+            else:
+                print("* regular file:"+name)
+                unknown_files.append(name)
+                
+            #build packages
+            tmp_packages=[]
+            
+            for key in incoming_packages:
+                pkg=incoming_packages[key]
+                size=len(pkg["files"])
+                
+                for file in pkg["files"]:
+                    if (file[1]==True):
+                        size=size-1
+                    else:
+                        if (file[0] in unknown_files):
+                            size=size-1
+                            unknown_files.remove(file[0])
+                            file[1]=True
+                            print("* added to package "+file[0])
+            
+                if (size==0):
+                    print("* package is ready:"+key)
+                    now=datetime.datetime.now()
+                    delta=(now-start).seconds
+                    priority=(pkg["urgency"]*10) + (delta//60)
+
+                    folder_temp = tempfile.mkdtemp(dir=BUILD)
+                    os.chmod(folder_temp,0o777)
+                    for file in pkg['files']:
+                        shutil.move(os.path.join(INBOX,file[0]),os.path.join(folder_temp,file[0]))
+                    shutil.move(os.path.join(INBOX,key),os.path.join(folder_temp,key))
+
+                    outgoing_packages.put((priority,folder_temp))
+                    tmp_packages.append(key)
+                    
+                    
+            for key in tmp_packages:
+                incoming_packages.pop(key)
+
+        #raul part
+        if (outgoing_packages.qsize()>0):
+            found = False
+            jobs = []
+            queue_available = []	
+            headers = get_auth_tokens()
+            jobs = jobs_autobuilder(headers)
+            for job in jobs:
+                job_info = json.loads(requests.post('{0}/job/{1}/api/json'.format(server_url,job),auth=auth,headers=headers).text)
+                if not job_info['buildable']:
+                    continue
+                # Get status last job
+                if len(job_info['builds']) > 0:
+                    response = requests.post('{0}/job/{1}/lastBuild/api/json/'.format(server_url,job),auth=auth ,headers=headers)
+                    build = json.loads(response.text)
+                    if not build['building'] and job_info['queueItem'] is None:
+                        print('{0} esta libre'.format(job))
+                        pkg=outgoing_packages.get()
+                        found = True
+                        run_build(headers, job, os.path.join(INBOX,pkg[1]))
+                        break
+                else:
+                    print('{0} esta libre'.format(job))
+                    pkg=outgoing_packages.get()
+                    run_build(headers, job, os.path.join(INBOX,pkg[1]))
+                    found = True
+                    break
+                if job_info['queueItem'] is None or ( not build['building'] and not job_info['queueItem'] is None ):
+                    queue_available.append(job)
+            if len(queue_available) >= 1 and not found:
+                print("Encolamos el trabajo en {0}".format(queue_available[0]))
+                pkg=outgoing_packages.get()
+                run_build(headers, queue_available[0], os.path.join(INBOX,pkg[1]))
+            
+        time.sleep(3.0)
+        
+
+
+if __name__ == '__main__':
+    main()
