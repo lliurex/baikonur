@@ -1,13 +1,13 @@
-version: '3'
+version: '3.7'
 services:
   inbox:
     container_name: inbox_service
     image: inbox
-    build: e
+    build:
       context: ./ssh
     ports:
       - "20:22"
-    volume:
+    volumes:
       - type: volume
         source: inbox_folder
         target: /inbox
@@ -17,16 +17,17 @@ services:
 
   baikonur:
     container_name: baikonur_service
+    restart: always
     image: baikonur
     build:
       context: ./baikonur
-    volume:
+    volumes:
       - type: volume
-      source: inbox_folder
-      target: /srv/autobuildinbox
+        source: inbox_folder
+        target: /srv/autobuildinbox
       - type: volume
-      source: build_folder
-      target: /srv/autobuildfolder
+        source: build_folder
+        target: /srv/autobuildfolder
     networks:
       - autobuildnet
     secrets:
@@ -48,9 +49,7 @@ services:
         target: /var/jenkins_home
     restart: always
     networks:
-      - autobuildnet:
-          aliases:
-            - jenkins_service
+      - autobuildnet
     secrets:
       - jenkins-user
       - jenkins-pass
@@ -58,9 +57,11 @@ services:
   repobuilder:
     container_name: repobuilder_service
     image: repobuilder
+    restart: always
     build:
-      context: ./repobuilder
-    volume:
+      context: .
+      dockerfile: repobuilder/Dockerfile
+    volumes:
       - type: volume
         source: repository
         target: /srv/repository
@@ -68,14 +69,13 @@ services:
         source: build_folder
         target: /srv/autobuildfolder
     networks:
-      - autobuildnet:
-          aliases:
-            - repobuilder  
+      - autobuildnet
 
   web:
-    container_name: repoweb
+    container_name: webrepo_service
     image: httpd:latest
-    port:
+    restart: always
+    ports:
       - "80:80"
     volumes:
       - type: volume
@@ -88,9 +88,7 @@ services:
         source: build_folder
         target: /srv/autobuildfolder
     networks:
-      - webnet:
-          aliases:
-            - repository
+      - webnet
 volumes:
   jenkins_config:
   inbox_folder:
@@ -99,20 +97,20 @@ volumes:
   repository:
 networks:
   inboxnet:
-    driver: bridge
-    config:
-      - subnet: 172.16.0.0/30
-        gateway: 172.16.0.1
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.0.0/30"
   autobuildnet:
-    driver: bridge
-    config:
-      - subnet: 172.16.1.0/29
-        gateway: 172.16.1.1
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.1.0/29"
   webnet:
-    driver: bridge
-    config:
-      - subnet: 172.16.0.4/30
-        gateway: 172.16.0.5
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.0.4/30"
 secrets:
   jenkins-user:
     file: ./jenkins_user
