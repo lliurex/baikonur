@@ -93,7 +93,97 @@ services:
         source: build_folder
         target: /srv/autobuildfolder
     networks:
-      - webnet
+      webnet:
+        aliases:
+          - webrepo
+  sbuild_1:
+    container_name: sbuild_1_service
+    image: sbuild_lliurex19
+    build:
+      context: .
+      dockerfile: sbuild/Dockerfile
+    restart: always
+    volumes:
+      - type: volume
+        source: build_folcer
+        target: /srv/autobuildfolder
+      - type: volume
+        source: logs_folder
+        target: /buildlogs/
+    networks:
+      webnet:
+        aliases:
+          - webrepo
+      autobuildnet:
+        aliases:
+          - sbuild_1
+
+  sbuild_2:
+    container_name: sbuild_2_service
+    image: sbuild_lliurex19
+    build:
+      context: .
+      dockerfile: sbuild/Dockerfile
+    restart: always
+    volumes:
+      - type: volume
+        source: build_folcer
+        target: /srv/autobuildfolder
+      - type: volume
+        source: logs_folder
+        target: /buildlogs/
+    networks:
+      webnet:
+        aliases:
+          - webrepo
+      autobuildnet:
+        aliases:
+          - sbuild_2
+
+  sbuild_3:
+    container_name: sbuild_3_service
+    image: sbuild_lliurex19
+    build:
+      context: .
+      dockerfile: sbuild/Dockerfile
+    restart: always
+    volumes:
+      - type: volume
+        source: build_folcer
+        target: /srv/autobuildfolder
+      - type: volume
+        source: logs_folder
+        target: /buildlogs/
+    networks:
+      webnet:
+        aliases:
+          - webrepo
+      autobuildnet:
+        aliases:
+          - sbuild_3
+
+  sbuild_4:
+    container_name: sbuild_4_service
+    image: sbuild_lliurex19
+    build:
+      context: .
+      dockerfile: sbuild/Dockerfile
+    restart: always
+    volumes:
+      - type: volume
+        source: build_folcer
+        target: /srv/autobuildfolder
+      - type: volume
+        source: logs_folder
+        target: /buildlogs/
+    networks:
+      webnet:
+        aliases:
+          - webrepo
+      autobuildnet:
+        aliases:
+          - sbuild_4
+
 volumes:
   jenkins_config:
   inbox_folder:
@@ -115,7 +205,7 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: "172.16.0.4/30"
+        - subnet: "172.16.2.0/29"
 secrets:
   jenkins-user:
     file: ./jenkins_user
