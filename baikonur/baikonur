@@ -28,7 +28,7 @@ with open('/run/secrets/jenkins-pass','r') as fd:
 
 auth = (user,passw)
 job_name = 'autobuilder_'
-server_url = 'http://jenkins_service/'
+server_url = 'http://jenkins_service:8080/'
 jobs = []
 queue_available = []
 
@@ -43,7 +43,7 @@ unknown_files=[]
 outgoing_packages=queue.PriorityQueue()
 
 def get_auth_tokens():
-    crumb = requests.get('http://{0}:{1}@jenkins_service/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'.format(user,passw)).text
+    crumb = requests.get('http://{0}:{1}@jenkins_service:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'.format(user,passw)).text
     return {'Jenkins-Crumb':crumb.split(':')[1]}
 
 

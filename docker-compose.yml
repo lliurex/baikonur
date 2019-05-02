@@ -29,7 +29,9 @@ services:
         source: build_folder
         target: /srv/autobuildfolder
     networks:
-      - autobuildnet
+      autobuildnet:
+        aliases:
+          - baikonur
     secrets:
       - jenkins-user
       - jenkins-pass
@@ -49,7 +51,9 @@ services:
         target: /var/jenkins_home
     restart: always
     networks:
-      - autobuildnet
+      autobuildnet:
+        aliases:
+          - jenkins_service  
     secrets:
       - jenkins-user
       - jenkins-pass
@@ -69,8 +73,9 @@ services:
         source: build_folder
         target: /srv/autobuildfolder
     networks:
-      - autobuildnet
-
+      autobuildnet:
+        aliases:
+          - repobuilder_service
   web:
     container_name: webrepo_service
     image: httpd:latest
