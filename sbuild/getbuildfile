@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+import deb822
+import sys
+changes = deb822.Changes(open(sys.argv[1]))
+print(changes['Source']+ '_' + changes['Version'] + '_amd64.build')
+

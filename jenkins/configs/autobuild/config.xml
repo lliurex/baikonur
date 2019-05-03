@@ -35,20 +35,15 @@
   <builders>
     <hudson.tasks.Shell>
       <command>
-#a=$(mktemp -d -p /srv/autobuildfolder/)
-#chmod a+rx ${a}
-#parseadorchanges ${CHANGES_PATH} | while read line; do mv $line $a; done
-#sleep 20
-#exit 0
 cd ${BUILD_PATH}
-dest_log=$(mktemp -u -p /var/www/logs)
+dest_log=$(mktemp -u -p /buildlogs/)
 changes_file=$(find . -name *.changes | head -n1)
 ln -s ${BUILD_PATH}/$(getbuildfile ${changes_file}) $dest_log
 log_file=$(basename ${dest_log})
 
 echo &quot;&quot;
 echo &quot;&quot;
-echo &quot;http://172.20.8.6/logs/${log_file}&quot;
+echo &quot;http://localhost/buildlogs/${log_file}&quot;
 echo &quot;&quot;
 echo &quot;&quot;
 
