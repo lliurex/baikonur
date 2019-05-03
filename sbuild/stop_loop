@@ -1,2 +1,2 @@
 #!/bin/bash
-kill -2 $(ps aux | grep -v grep |grep main_loop | awk '{print $2}')
+kill -2 $(ps aux | grep -v grep |grep sshd | awk '{print $2}')

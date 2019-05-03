@@ -12,4 +12,4 @@ RUN chmod +x /usr/bin/getbuildfile
 RUN apt update; apt install -y python3 openssh-server openjdk-8-jdk
 RUN useradd -G sbuild -ms /bin/bash -p $(cat /jenkins_pass) $(cat /jenkins_user) 
 RUN rm jenkins_pass jenkins_user
-CMD main_loop
+CMD /usr/sbin/sshd -D
