@@ -204,7 +204,7 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: "192.168.1.0/29"
+        - subnet: "192.168.1.0/28"
   webnet:
     ipam:
       driver: default
