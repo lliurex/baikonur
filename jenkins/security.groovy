@@ -1,24 +1,29 @@
 #!groovy
- 
+
+import jenkins.* 
 import jenkins.model.*
+import hudson.*
+import hudson.model.*
 import hudson.security.*
 import hudson.security.csrf.DefaultCrumbIssuer
 import hudson.slaves.*
+import hudson.plugins.sshslaves.verifiers.NonVerifyingKeyVerificationStrategy
 import hudson.slaves.EnvironmentVariablesNodeProperty.Entry
 import jenkins.security.s2m.AdminWhitelistRule
-import com.cloudbees.plugins.credentials.impl.*;
-import com.cloudbees.plugins.credentials.*;
 import org.jenkinsci.plugins.plaincredentials.*
 import org.jenkinsci.plugins.plaincredentials.impl.*
+import com.cloudbees.plugins.credentials.*
+import com.cloudbees.plugins.credentials.impl.*
 import com.cloudbees.plugins.credentials.common.*
- 
+import com.cloudbees.plugins.credentials.domains.*
+
 def instance = Jenkins.getInstance()
 
 // Create admin user
 
 def user = new File("/run/secrets/jenkins-user").text.trim()
 def pass = new File("/run/secrets/jenkins-pass").text.trim()
- 
+
 def hudsonRealm = new HudsonPrivateSecurityRealm(false)
 hudsonRealm.createAccount(user, pass)
 instance.setSecurityRealm(hudsonRealm)
@@ -83,7 +88,7 @@ Jenkins.instance.createProjectFromXML(jobName, xmlStream)
 
 // Create credentials
 
-/ Username and password
+// Username and password
 Credentials c = (Credentials) new UsernamePasswordCredentialsImpl(
 CredentialsScope.GLOBAL, // Scope
 "sbuild_credentials", // id
@@ -98,21 +103,21 @@ SystemCredentialsProvider.getInstance().getStore().addCredentials(Domain.global(
 // Create Nodes 
 
 ComputerLauncher launcher = new hudson.plugins.sshslaves.SSHLauncher(
-        "host", // Host
-        22, // Port
-        "sbuild_credentials", // Credentials
-        (String)null, // JVM Options
-        (String)null, // JavaPath
-        (String)null, // Prefix Start Slave Command
-        (String)null, // Suffix Start Slave Command
-        (Integer)null, // Connection Timeout in Seconds
-        (Integer)null, // Maximum Number of Retries
-        (Integer)null // The number of seconds to wait between retries
-)
+            "sbuild_1", 
+            22, 
+            "sbuild_credentials", 
+            (String)null, 
+            "/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java", 
+            (String)null, 
+            (String)null, 
+            210, 
+            10, 
+            15, 
+            new NonVerifyingKeyVerificationStrategy())
 
 
-Slave agent = new DumbSlave("agent-node", "/home/jenkins", launcher)
-agent.nodeDescription = "Agent node description"
+Slave agent = new DumbSlave("sbuild_1", "/home/"+user, launcher)
+agent.nodeDescription = "Sbuild agent"
 agent.numExecutors = 1
 agent.labelString = "sbuild_1"
 agent.mode = Node.Mode.NORMAL
