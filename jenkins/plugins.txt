@@ -20,3 +20,7 @@ run-condition
 ssh
 ssh-slaves
 ws-cleanup
+jdk-tool
+cloudbees-folder
+command-launcher
+locale
