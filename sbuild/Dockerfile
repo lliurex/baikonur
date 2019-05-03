@@ -6,6 +6,7 @@ COPY jenkins_pass /
 COPY jenkins_user /
 COPY ./sbuild/lliurex /etc/schroot/chroot.d/
 COPY ./sbuild/sources.list /sbuild/bionic-amd64/etc/apt/
+RUN mkdir -p /var/run/sshd
 RUN chmod +x /usr/bin/main_loop
 RUN chmod +x /usr/bin/stop_loop
 RUN chmod +x /usr/bin/getbuildfile
