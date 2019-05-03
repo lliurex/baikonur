@@ -103,6 +103,7 @@ services:
       context: .
       dockerfile: sbuild/Dockerfile
     restart: always
+    privileged: true
     volumes:
       - type: volume
         source: build_folder
@@ -125,6 +126,7 @@ services:
       context: .
       dockerfile: sbuild/Dockerfile
     restart: always
+    privileged: true
     volumes:
       - type: volume
         source: build_folder
@@ -147,6 +149,7 @@ services:
       context: .
       dockerfile: sbuild/Dockerfile
     restart: always
+    privileged: true
     volumes:
       - type: volume
         source: build_folder
@@ -169,6 +172,7 @@ services:
       context: .
       dockerfile: sbuild/Dockerfile
     restart: always
+    privileged: true
     volumes:
       - type: volume
         source: build_folder
