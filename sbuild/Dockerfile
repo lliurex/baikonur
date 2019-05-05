@@ -11,6 +11,7 @@ RUN chmod +x /usr/bin/main_loop
 RUN chmod +x /usr/bin/stop_loop
 RUN chmod +x /usr/bin/getbuildfile
 RUN apt update; apt install -y python3 openssh-server openjdk-8-jdk
-RUN useradd -G sbuild -ms /bin/bash -p $(cat /jenkins_pass) $(cat /jenkins_user) 
+RUN useradd -G sbuild -ms /bin/bash $(cat /jenkins_user)
+RUN echo "$(cat /jenkins_user):$(cat /jenkins_pass)" | chpasswd
 RUN rm jenkins_pass jenkins_user
 CMD /usr/sbin/sshd -D

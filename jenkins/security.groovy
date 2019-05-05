@@ -132,3 +132,93 @@ agent.retentionStrategy = new RetentionStrategy.Always()
 
 // Create a "Permanent Agent"
 Jenkins.instance.addNode(agent)
+
+launcher = new hudson.plugins.sshslaves.SSHLauncher(
+            "sbuild_2", 
+            22, 
+            "sbuild_credentials", 
+            (String)null, 
+            "/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java", 
+            (String)null, 
+            (String)null, 
+            210, 
+            10, 
+            15, 
+            new NonVerifyingKeyVerificationStrategy())
+
+agent = new DumbSlave("sbuild_2", "/home/"+user, launcher)
+agent.nodeDescription = "Sbuild agent"
+agent.numExecutors = 1
+agent.labelString = "sbuild_2"
+agent.mode = Node.Mode.NORMAL
+agent.retentionStrategy = new RetentionStrategy.Always()
+
+Jenkins.instance.addNode(agent)
+
+launcher = new hudson.plugins.sshslaves.SSHLauncher(
+            "sbuild_3", 
+            22, 
+            "sbuild_credentials", 
+            (String)null, 
+            "/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java", 
+            (String)null, 
+            (String)null, 
+            210, 
+            10, 
+            15, 
+            new NonVerifyingKeyVerificationStrategy())
+
+agent = new DumbSlave("sbuild_3", "/home/"+user, launcher)
+agent.nodeDescription = "Sbuild agent"
+agent.numExecutors = 1
+agent.labelString = "sbuild_3"
+agent.mode = Node.Mode.NORMAL
+agent.retentionStrategy = new RetentionStrategy.Always()
+
+Jenkins.instance.addNode(agent)
+
+launcher = new hudson.plugins.sshslaves.SSHLauncher(
+            "sbuild_4", 
+            22, 
+            "sbuild_credentials", 
+            (String)null, 
+            "/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java", 
+            (String)null, 
+            (String)null, 
+            210, 
+            10, 
+            15, 
+            new NonVerifyingKeyVerificationStrategy())
+
+agent = new DumbSlave("sbuild_4", "/home/"+user, launcher)
+agent.nodeDescription = "Sbuild agent"
+agent.numExecutors = 1
+agent.labelString = "sbuild_4"
+agent.mode = Node.Mode.NORMAL
+agent.retentionStrategy = new RetentionStrategy.Always()
+
+Jenkins.instance.addNode(agent)
+
+
+launcher = new hudson.plugins.sshslaves.SSHLauncher(
+            "repobuilder_service", 
+            22, 
+            "sbuild_credentials", 
+            (String)null, 
+            "/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java", 
+            (String)null, 
+            (String)null, 
+            210, 
+            10, 
+            15, 
+            new NonVerifyingKeyVerificationStrategy())
+
+agent = new DumbSlave("repobuilder_service", "/home/"+user, launcher)
+agent.nodeDescription = "Sbuild agent"
+agent.numExecutors = 1
+agent.labelString = "repobuilder_service"
+agent.mode = Node.Mode.NORMAL
+agent.retentionStrategy = new RetentionStrategy.Always()
+
+Jenkins.instance.addNode(agent)
+

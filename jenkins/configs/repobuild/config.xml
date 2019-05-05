@@ -23,7 +23,7 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>cd /srv/mirror/autobuild
+      <command>cd /srv/repository/baikonur/bionic/unstable/
 reprepro includedeb bionic ${BUILD_PATH}/*.deb
 reprepro export bionic
 </command>
