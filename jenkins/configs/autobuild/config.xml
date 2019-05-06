@@ -45,7 +45,7 @@
 cd ${BUILD_PATH}
 dest_log=$(mktemp -u -p /buildlogs/)
 changes_file=$(find . -name *.changes | head -n1)
-ln -s ${BUILD_PATH}/$(getbuildfile ${changes_file}) $dest_log
+#ln -s ${BUILD_PATH}/$(getbuildfile ${changes_file}) $dest_log
 log_file=$(basename ${dest_log})
 
 echo &quot;&quot;
@@ -54,7 +54,7 @@ echo &quot;http://localhost/buildlogs/${log_file}&quot;
 echo &quot;&quot;
 echo &quot;&quot;
 
-sbuild -d lliurex *.dsc
+sbuild -d lliurex19 *.dsc
 find . -type l -exec cat {} \;</command>
     </hudson.tasks.Shell>
   </builders>
