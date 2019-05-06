@@ -29,7 +29,7 @@ services:
         source: build_folder
         target: /srv/autobuildfolder
     networks:
-      autobuildnet1:
+      autobuildnet:
         aliases:
           - baikonur
     secrets:
@@ -50,16 +50,9 @@ services:
         target: /var/jenkins_home
     restart: always
     networks:
-      autobuildnet1:
+      autobuildnet:
         aliases:
-          - jenkins_service
-      autobuildnet2:
-        aliases:
-          - jenkins_service
-      autobuildnet3:
-        aliases:
-          - jenkins_service
-
+          - jenkins_service 
     secrets:
       - jenkins-user
       - jenkins-pass
@@ -79,7 +72,7 @@ services:
         source: build_folder
         target: /srv/autobuildfolder
     networks:
-      autobuildnet1:
+      autobuildnet:
         aliases:
           - repobuilder_service
   web:
@@ -120,7 +113,7 @@ services:
       webnet:
         aliases:
           - sbuild_1
-      autobuildnet2:
+      autobuildnet:
         aliases:
           - sbuild_1
 
@@ -142,7 +135,7 @@ services:
       webnet:
         aliases:
           - sbuild_2
-      autobuildnet2:
+      autobuildnet:
         aliases:
           - sbuild_2
 
@@ -164,7 +157,7 @@ services:
       webnet:
         aliases:
           - sbuild_3
-      autobuildnet3:
+      autobuildnet:
         aliases:
           - sbuild_3
 
@@ -186,7 +179,7 @@ services:
       webnet:
         aliases:
           - sbuild_4
-      autobuildnet3:
+      autobuildnet:
         aliases:
           - sbuild_4
 
@@ -201,27 +194,17 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: "192.168.0.0/30"
+        - subnet: "172.18.0.0/30"
+  autobuildnet:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.19.0.0/28"
   webnet:
     ipam:
       driver: default
       config:
-        - subnet: "192.168.1.0/29"
-  autobuildnet1:
-    ipam:
-      driver: default
-      config:
-        - subnet: "192.168.2.0/29"
-  autobuildnet2:
-    ipam:
-      driver: default
-      config:
-        - subnet: "192.168.3.0/29"
-  autobuildnet3:
-    ipam:
-      driver: default
-      config:
-        - subnet: "192.168.4.0/29"
+        - subnet: "172.20.0.0/29"
 secrets:
   jenkins-user:
     file: ./jenkins_user
