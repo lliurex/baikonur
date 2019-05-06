@@ -199,17 +199,17 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: "192.168.0.0/30"
+        - subnet: "10.0.0.0/30"
   autobuildnet:
     ipam:
       driver: default
       config:
-        - subnet: "192.168.1.0/28"
+        - subnet: "10.0.1.0/28"
   webnet:
     ipam:
       driver: default
       config:
-        - subnet: "192.168.2.0/29"
+        - subnet: "10.0.2.0/29"
 secrets:
   jenkins-user:
     file: ./jenkins_user
