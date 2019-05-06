@@ -1,0 +1,9 @@
+#!/bin/bash
+
+for x in $(ls /usr/share/baikonur); do
+    if [ ! -d $x ]; then
+        cp -r /usr/share/baikonur/$x .
+    fi
+done
+
+/usr/sbin/sshd -D
