@@ -1,0 +1,26 @@
+Codename: bionic                                                                                                                                                                             
+Version: 19.04
+Origin: LliureX
+Label: LliureX
+Description: LliureX Distribution Packages
+Architectures: i386 amd64 source
+Components: main
+UDebComponents: main
+
+Codename: bionic-updates
+Version: 19.04
+Origin: LliureX
+Label: LliureX
+Description: LliureX Distribution Packages
+Architectures: i386 amd64 source
+Components: main
+UDebComponents: main
+
+Codename: bionic-security
+Version: 19.04
+Origin: LliureX
+Label: LliureX
+Description: LliureX Distribution Packages
+Architectures: i386 amd64 source
+Components: main
+UDebComponents: main

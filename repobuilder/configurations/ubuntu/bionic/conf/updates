@@ -1,0 +1,22 @@
+Name: bionic
+Method: http://uk.archive.ubuntu.com/ubuntu
+Suite: bionic
+Components: main universe restricted multiverse
+UDebComponents: main
+Architectures: i386 amd64
+VerifyRelease: blindtrust
+
+Name: bionic-updates
+Method: http://uk.archive.ubuntu.com/ubuntu
+Suite: bionic-updates
+Components: main universe restricted multiverse
+UDebComponents: main
+Architectures: i386 amd64
+VerifyRelease: blindtrust
+
+Name: bionic-security
+Method: http://uk.archive.ubuntu.com/ubuntu
+Suite: bionic-updates
+Components: main universe restricted multiverse
+Architectures: i386 amd64
+VerifyRelease: blindtrust

@@ -1,0 +1,29 @@
+Codename: bionic
+Version: 19.06
+Origin: LliureX
+Label: LliureX
+Description: LliureX Distribution Packages
+Architectures: i386 amd64
+Components: main restricted universe multiverse partner
+UDebComponents: main
+Update: - bionic
+
+Codename: bionic-updates
+Version: 19.06
+Origin: LliureX
+Label: LliureX
+Description: LliureX Distribution Packages
+Architectures: i386 amd64
+Components: main restricted universe multiverse partner
+UDebComponents: main
+Update: - bionic-updates
+
+Codename: bionic-security
+Version: 19.06
+Origin: LliureX
+Label: LliureX
+Description: LliureX Distribution Packages
+Architectures: i386 amd64
+Components: main restricted universe multiverse partner
+UDebComponents: main
+Update: - bionic-security
