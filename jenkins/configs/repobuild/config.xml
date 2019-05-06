@@ -16,6 +16,7 @@
   </properties>
   <scm class="hudson.scm.NullSCM"/>
   <canRoam>true</canRoam>
+  <assignedNode>repobuilder_service</assignedNode>
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
@@ -23,9 +24,9 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>cd /srv/repository/baikonur/bionic/unstable/
-reprepro includedeb bionic ${BUILD_PATH}/*.deb
-reprepro export bionic
+      <command>cd /srv/repository/baikonur/unstable/bionic
+sudo reprepro includedeb bionic ${BUILD_PATH}/*.deb
+sudo reprepro export bionic
 </command>
     </hudson.tasks.Shell>
   </builders>
