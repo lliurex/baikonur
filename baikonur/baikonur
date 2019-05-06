@@ -27,7 +27,7 @@ with open('/run/secrets/jenkins-pass','r') as fd:
     passw = fd.readline().strip()
 
 auth = (user,passw)
-job_name = 'autobuilder_'
+job_name = 'autobuild_'
 server_url = 'http://jenkins_service:8080/'
 jobs = []
 queue_available = []
