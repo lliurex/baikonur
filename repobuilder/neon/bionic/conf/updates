@@ -1,0 +1,6 @@
+Name: neon-bionic                                                                                                                                                                            
+Method: http://archive.neon.kde.org/release
+Suite: bionic
+Components: main
+Architectures: i386 amd64 source
+VerifyRelease: blindtrust

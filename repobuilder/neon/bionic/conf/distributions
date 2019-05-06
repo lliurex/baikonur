@@ -1,0 +1,9 @@
+Codename: bionic                                                                                                                                                                             
+Suite: bionic
+Version: 19.06
+Origin: Neon
+Label: Neon
+Description: Neon packages
+Architectures: i386 amd64
+Components: main
+Update: - neon-bionic  
