@@ -17,6 +17,7 @@ services:
 
   baikonur:
     container_name: baikonur_service
+    tty: true
     restart: always
     image: baikonur
     build:
@@ -102,6 +103,7 @@ services:
       context: .
       dockerfile: sbuild/Dockerfile
     restart: always
+    privileged: true
     volumes:
       - type: volume
         source: build_folder
@@ -124,6 +126,7 @@ services:
       context: .
       dockerfile: sbuild/Dockerfile
     restart: always
+    privileged: true
     volumes:
       - type: volume
         source: build_folder
@@ -146,6 +149,7 @@ services:
       context: .
       dockerfile: sbuild/Dockerfile
     restart: always
+    privileged: true
     volumes:
       - type: volume
         source: build_folder
@@ -168,6 +172,7 @@ services:
       context: .
       dockerfile: sbuild/Dockerfile
     restart: always
+    privileged: true
     volumes:
       - type: volume
         source: build_folder
