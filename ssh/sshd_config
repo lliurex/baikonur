@@ -7,6 +7,11 @@ AllowGroups lliurex
 
 UseDNS no
 
+RSAAuthentication yes
+PubkeyAuthentication yes
+
+AuthorizedKeysFile /etc/ssh/.ssh.%u.authorized_keys
+
 # Limited access
 X11Forwarding no
 AllowTcpForwarding yes

@@ -1,0 +1,8 @@
+[baikonur]
+login = user_inbox
+method  = scp
+fqdn    = IP
+incoming        = /inbox
+ssh_config_options = UserKnownHostsFile=/dev/null
+ StrictHostKeyChecking=no
+ port=20
