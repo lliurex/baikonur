@@ -16,6 +16,7 @@ import os
 import shutil
 import tempfile
 import glob
+import codecs
 
 user = 'adminuser'
 passw = 'password'
@@ -57,7 +58,7 @@ def jobs_autobuilder(headers):
 
 def run_build(headers, autobuilder_instance, build_path):
     changes_file = glob.glob(os.path.join(build_path,'*.dsc'))[0]
-    package_description = deb822.Changes(open(changes_file))
+    package_description = deb822.Changes(codecs.open(changes_file,encoding='utf-8'))
     source_name = package_description['Source']
     version_package = package_description['Version']
     auth = (user, passw)
@@ -107,7 +108,7 @@ def main():
                 pkg={}
                 pkg["files"]=[]
                 
-                f=open(INBOX+"/"+name)
+                f=codecs.open(INBOX+"/"+name,encoding='utf-8')
                 data=deb822.Changes(f)
                 f.close()
                 
