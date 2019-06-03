@@ -44,7 +44,7 @@
       <command>
 cd ${BUILD_PATH}
 dest_log=$(mktemp -u -p /buildlogs/)
-changes_file=$(find . -name *.changes | head -n1)
+changes_file=$(find . -name *source.changes | head -n1)
 #ln -s ${BUILD_PATH}/$(getbuildfile ${changes_file}) $dest_log
 log_file=$(basename ${dest_log})
 
