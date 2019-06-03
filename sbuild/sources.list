@@ -1,5 +1,5 @@
 deb [trusted=yes] http://webrepo/ubuntu/bionic bionic main restricted universe multiverse
 deb [trusted=yes] http://webrepo/ubuntu/bionic bionic-updates main restricted universe multiverse
 deb [trusted=yes] http://webrepo/ubuntu/bionic bionic-security main restricted universe multiverse
-deb [trusted=yes] http://webrepo/baikonur/unstable/bionic bionic main
+deb [trusted=yes] http://webrepo/baikonur/bionic/unstable bionic main
 deb [trusted=yes] http://webrepo/neon/bionic bionic main
