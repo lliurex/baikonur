@@ -80,6 +80,10 @@ services:
     container_name: webrepo_service
     image: httpd:latest
     restart: always
+    image: webserver
+    build:
+      context: .
+      dockerfile: web/Dockerfile
     ports:
       - "80:80"
     volumes:
