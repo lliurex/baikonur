@@ -219,3 +219,5 @@ secrets:
     file: ./jenkins_user
   jenkins-pass:
     file: ./jenkins_pass
+  packagesconfig:
+    file: ./packageconfig

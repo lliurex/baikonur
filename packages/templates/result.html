@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <style>
+            .packagename{
+                font-size: 2em;
+            }
+            .packageversion{
+                font-size: 1.6em;
+                margin-left: 50px;
+            }
+            .packagelink{
+                margin-left:40px;
+            }
+            body{
+                padding: 20px;
+            }
+            .info{
+                padding-left: 40px;
+            }
+            .copylink{
+                margin-left: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Results</h1>
+        {% for package in packages %}
+        <div>
+            <span class='packagename'>{{ package.package.Package }}</span>
+            <span class='packageversion'>{{ package.package.Version}}</span>
+            <a class='packagelink' href="{{ baseurl }}{{package.package.Filename }}">Download</a>
+            <span class='copylink'>{{ baseurl }}{{package.package.Filename }}</span>
+            <div class='info'>
+                <div>{{ package.release}}</div>
+                <div>{{ package.index }}</div>  
+            </div>
+            
+        </div>
+        {% endfor %}
+    </body>
+</html>
