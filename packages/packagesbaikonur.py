@@ -3,7 +3,7 @@ from packageFinder import PackageFinder
 import json
 
 application = Flask(__name__)
-configuration = json.loads(open('/run/secrets/packagesconfig','r'))
+configuration = json.load(open('/run/secrets/packagesconfig','r'))
 
 @application.route("/")
 def index():
