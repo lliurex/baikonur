@@ -78,7 +78,6 @@ services:
           - repobuilder_service
   web:
     container_name: webrepo_service
-    image: httpd:latest
     restart: always
     image: webserver
     build:
@@ -89,10 +88,10 @@ services:
     volumes:
       - type: volume
         source: repository
-        target: /usr/local/apache2/htdocs/
+        target: /usr/share/nginx/html
       - type: volume
         source: logs_folder
-        target: /usr/local/apache2/htdocs/buildlogs/
+        target: /usr/share/nginx/html/buildlogs/
       - type: volume
         source: build_folder
         target: /srv/autobuildfolder
@@ -100,6 +99,26 @@ services:
       webnet:
         aliases:
           - webrepo
+  
+  packagesfinder:
+    container_name: packages_service
+    image: packages
+    restart: always
+    image: packages
+    build:
+      context: packages
+    networks:
+      webnet:
+        aliases:
+          - packages
+    secrets:
+      - packagesconfig
+    volumes:
+      - type: volume
+        source: repository
+        target: /app/environment/
+        read_only: true
+
   sbuild_1:
     container_name: sbuild_1_service
     image: sbuild_lliurex19
@@ -213,11 +232,11 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: "10.0.2.0/29"
+        - subnet: "10.0.2.0/28"
 secrets:
   jenkins-user:
     file: ./jenkins_user
   jenkins-pass:
     file: ./jenkins_pass
   packagesconfig:
-    file: ./packageconfig
+    file: ./packagesconfig
