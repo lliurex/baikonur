@@ -3,6 +3,8 @@
 for x in $(ls /usr/share/baikonur); do
     if [ ! -d $x ]; then
         cp -r /usr/share/baikonur/$x .
+        chmod -R g+s $x
+        chown -R :www-data $x
     fi
 done
 
