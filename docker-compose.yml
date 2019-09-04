@@ -111,6 +111,7 @@ services:
       webnet:
         aliases:
           - packages
+          - find
     secrets:
       - packagesconfig
     volumes:
