@@ -5,11 +5,11 @@ import json
 application = Flask(__name__)
 configuration = json.load(open('/run/secrets/packagesconfig','r'))
 
-@application.route("/")
+@application.route("/find/")
 def index():
     return render_template("search.html")
 
-@application.route("/search",methods=['POST'])
+@application.route("/find/search",methods=['POST'])
 def search():
     result = request.form
     options = []
@@ -21,7 +21,9 @@ def search():
         options.append('description')
     if 'needle' not in request.form:
         return "Keyword is needed"
-    app = PackageFinder(configuration['url_base'], configuration['search_path'], configuration['pool_path'])
+    if 'repository' not in request.form:
+        return "Repository is needed"
+    app = PackageFinder(configuration['url_base'], configuration['search_path'] +"/" + result['repository'], configuration['pool_path'])
     context = {}
     context['packages'] = app.search(result['needle'],options)
     context['baseurl'] = app.base_url

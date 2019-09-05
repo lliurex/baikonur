@@ -1,11 +1,18 @@
 <html>
     <body>
-        <form action="find/search" method="POST">
+        <form action="search" method="POST">
             <label>keyword</label><input type="text" name="needle" />
             <label for="">Options</label><br/>
             <label>Name exact</label><input type="checkbox" name="equals" checked/>
             <label>Name contains</label><input type="checkbox" name="contains"/>
             <label>Description</label><input type="checkbox" name="description"/>
+            <div>Path</div>
+            <div>
+                <div> Baikonur unstable <input type="radio" value="baikonur/bionic/unstable" name="repository" selected></div>  
+                <div> Baikonur stable<input type="radio" value="baikonur/bionic/stable" name="repository"></div>
+                <div> Neon <input type="radio" value="neon/bionic/" name="repository"></div>
+                <div> Ubuntu <input type="radio" value="ubuntu/bionic/" name="repository"></div>
+            </div>
             <input type="submit" value="Search">
         </form>
     </body>
