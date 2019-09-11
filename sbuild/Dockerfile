@@ -2,7 +2,7 @@ FROM lliurex/sbuild:bionic
 COPY ./sbuild/getbuildfile /usr/bin
 COPY ./sbuild/main_loop /usr/bin
 COPY ./sbuild/stop_loop /usr/bin
-COPY ./checkpackageexists /usr/bin
+COPY ./sbuild/checkpackageexists /usr/bin
 COPY jenkins_pass /
 COPY jenkins_user /
 COPY ./sbuild/lliurex /etc/schroot/chroot.d/
