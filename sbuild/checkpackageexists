@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+import deb822
+import sys
+import requests
+import json
+import codecs
+changes = deb822.Changes(codecs.open(sys.argv[1],encoding='utf-8'))
+files = {'needle':(None,changes['Source']),'repository':(None,'baikonur/bionic/unstable'),'source':(None,'yes'),'json':(None,'yes')}
+response = requests.post('http://172.20.8.37/find/search',files=files)  
+all_result = json.loads(response.content.decode('utf-8'))
+for package in all_result['packages']:
+    if changes['Source'] == package['package']['Package'] and changes['Version'] == package['package']['Version']:
+        print("**********************************************************\n")
+        print("                  ERROR\n")
+        print('Source ' + changes['Source'] + " already exists in baikonur with version:" + changes['Version'] + "\n")
+        print("\n**********************************************************\n")
+        sys.exit(1)

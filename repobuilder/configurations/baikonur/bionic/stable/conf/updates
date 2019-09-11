@@ -1,0 +1,23 @@
+Name: baikonur
+Method: file:///srv/repository/baikonur/bionic/unstable
+Suite: bionic
+Components: main
+UDebComponents: main
+Architectures: amd64
+VerifyRelease: blindtrust
+
+Name: baikonur-updates
+Method: file:///srv/repository/baikonur/bionic/unstable
+Suite: bionic-updates
+Components: main
+UDebComponents: main
+Architectures: amd64
+VerifyRelease: blindtrust
+
+Name: baikonur-security
+Method: file:///srv/repository/baikonur/bionic/unstable
+Suite: bionic-security
+Components: main
+UDebComponents: main
+Architectures: amd64
+VerifyRelease: blindtrust

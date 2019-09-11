@@ -6,6 +6,7 @@ Description: LliureX Distribution Packages
 Architectures: i386 amd64 source
 Components: main
 UDebComponents: main
+Update: - baikonur
 
 Codename: bionic-updates
 Version: 19.04
@@ -15,6 +16,7 @@ Description: LliureX Distribution Packages
 Architectures: i386 amd64 source
 Components: main
 UDebComponents: main
+Update: - baikonur-updates
 
 Codename: bionic-security
 Version: 19.04
@@ -24,3 +26,4 @@ Description: LliureX Distribution Packages
 Architectures: i386 amd64 source
 Components: main
 UDebComponents: main
+Update: - baikonur-security
