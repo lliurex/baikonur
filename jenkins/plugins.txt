@@ -24,3 +24,4 @@ jdk-tool
 cloudbees-folder
 command-launcher
 locale
+strict-crumb-issuer

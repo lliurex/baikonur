@@ -16,6 +16,7 @@ import com.cloudbees.plugins.credentials.*
 import com.cloudbees.plugins.credentials.impl.*
 import com.cloudbees.plugins.credentials.common.*
 import com.cloudbees.plugins.credentials.domains.*
+import org.jenkinsci.plugins.strictcrumbissuer.*
 
 def instance = Jenkins.getInstance()
 
@@ -39,7 +40,9 @@ Jenkins.instance.getInjector().getInstance(AdminWhitelistRule.class).setMasterKi
 if(!Jenkins.instance.isQuietingDown()) {
     def j = Jenkins.instance
     if(j.getCrumbIssuer() == null) {
-        j.setCrumbIssuer(new DefaultCrumbIssuer(true))
+        def sci = new StrictCrumbIssuer()
+        sci.setCheckSessionMatch(false)
+        j.setCrumbIssuer(sci)
         j.save()
         println 'CSRF Protection configuration has changed.  Enabled CSRF Protection.'
     }
@@ -59,7 +62,7 @@ jenkinsLocationConfiguration.setUrl('http://jenkins_service:8080/')
 
 // Disable cli
 
-jenkins.CLI.get().setEnabled(false)
+//jenkins.CLI.get().setEnabled(false)
 
 
 // Create jobs
