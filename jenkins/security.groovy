@@ -70,14 +70,18 @@ jenkinsLocationConfiguration.setUrl('http://jenkins_service:8080/')
 def jobName = "autobuild"
 
 def file_config = new File("/usr/share/baikonur/autobuild/config.xml")
-def xmlStream = new ByteArrayInputStream( file_config.getBytes() )
+def template_text = file_config.text
+def engine = new groovy.text.SimpleTemplateEngine()
+def binding = ["numberbuilder":"1"]
+def template = engine.createTemplate(template_text).make(binding)
+def xmlStream = new ByteArrayInputStream( template.toString().getBytes() )
 
 Jenkins.instance.createProjectFromXML(jobName, xmlStream)
 
 for (i=1;i<=4;i++){
     def jobNameNum = jobName + "_" + i
-    file_config = new File("/usr/share/baikonur/autobuild/config.xml")
-    xmlStream = new ByteArrayInputStream( file_config.getBytes() )
+    binding = ["numberbuilder":i.toString()]
+    xmlStream = new ByteArrayInputStream( engine.createTemplate(template_text).make(binding).toString().getBytes() )
     Jenkins.instance.createProjectFromXML(jobNameNum, xmlStream)
 }
 

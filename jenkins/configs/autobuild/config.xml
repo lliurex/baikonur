@@ -32,7 +32,7 @@
     </com.sonyericsson.rebuild.RebuildSettings>
   </properties>
   <scm class="hudson.scm.NullSCM"/>
-  <assignedNode>sbuild_1</assignedNode>
+  <assignedNode>sbuild_$numberbuilder</assignedNode>
   <canRoam>false</canRoam>
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
@@ -42,21 +42,21 @@
   <builders>
     <hudson.tasks.Shell>
       <command>
-cd ${BUILD_PATH}
-dest_log=$(mktemp -u -p /buildlogs/)
-changes_file=$(find . -name *source.changes | head -n1)
-/usr/bin/checkpackageexists ${changes_file}
-ln -s ${BUILD_PATH}/$(getbuildfile ${changes_file}) $dest_log
-log_file=$(basename ${dest_log})
+cd \${BUILD_PATH}
+dest_log=\$(mktemp -u -p /buildlogs/)
+changes_file=\$(find . -name *source.changes | head -n1)
+/usr/bin/checkpackageexists \${changes_file}
+ln -s \${BUILD_PATH}/\$(getbuildfile \${changes_file}) \$dest_log
+log_file=\$(basename \${dest_log})
 
 echo &quot;&quot;
 echo &quot;&quot;
-echo &quot;http://localhost/buildlogs/${log_file}&quot;
+echo &quot;http://localhost/buildlogs/\${log_file}&quot;
 echo &quot;&quot;
 echo &quot;&quot;
 
 sbuild -d lliurex19 *.dsc
-find . -type l -exec cat {} \;</command>
+find . -type l -exec cat {} \\;</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
@@ -76,7 +76,7 @@ find . -type l -exec cat {} \;</command>
   </publishers>
   <buildWrappers>
     <org.jenkinsci.plugins.buildnamesetter.BuildNameSetter plugin="build-name-setter@1.7.1">
-      <template>${PACKAGE_SOURCE} - ${VERSION}</template>
+      <template>\${PACKAGE_SOURCE} - \${VERSION}</template>
       <runAtStart>true</runAtStart>
       <runAtEnd>true</runAtEnd>
     </org.jenkinsci.plugins.buildnamesetter.BuildNameSetter>
