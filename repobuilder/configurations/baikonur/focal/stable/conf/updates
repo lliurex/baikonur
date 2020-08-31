@@ -1,0 +1,23 @@
+Name: baikonur
+Method: file:///srv/repository/baikonur/focal/unstable
+Suite: focal
+Components: main
+UDebComponents: main
+Architectures: amd64
+VerifyRelease: blindtrust
+
+Name: baikonur-updates
+Method: file:///srv/repository/baikonur/focal/unstable
+Suite: focal-updates
+Components: main
+UDebComponents: main
+Architectures: amd64
+VerifyRelease: blindtrust
+
+Name: baikonur-security
+Method: file:///srv/repository/baikonur/focal/unstable
+Suite: focal-security
+Components: main
+UDebComponents: main
+Architectures: amd64
+VerifyRelease: blindtrust

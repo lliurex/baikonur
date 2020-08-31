@@ -1,0 +1,26 @@
+Codename: focal                                                                                                                                                                             
+Version: 21.06
+Origin: LliureX
+Label: LliureX
+Description: LliureX Distribution Packages
+Architectures: i386 amd64 source
+Components: main
+UDebComponents: main
+
+Codename: focal-updates
+Version: 21.06
+Origin: LliureX
+Label: LliureX
+Description: LliureX Distribution Packages
+Architectures: i386 amd64 source
+Components: main
+UDebComponents: main
+
+Codename: focal-security
+Version: 21.06
+Origin: LliureX
+Label: LliureX
+Description: LliureX Distribution Packages
+Architectures: i386 amd64 source
+Components: main
+UDebComponents: main
