@@ -29,9 +29,9 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>cd /srv/repository/baikonur/bionic/unstable
-sudo reprepro includedeb bionic ${BUILD_PATH}/*.deb
-sudo reprepro export bionic
+      <command>cd /srv/repository/baikonur/${DISTRIBUTION}/unstable
+sudo reprepro includedeb ${DISTRIBUTION} ${BUILD_PATH}/*.deb
+sudo reprepro export ${DISTRIBUTION}
 </command>
     </hudson.tasks.Shell>
   </builders>

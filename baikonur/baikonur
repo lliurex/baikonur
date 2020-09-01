@@ -61,9 +61,10 @@ def run_build(headers, autobuilder_instance, build_path):
     package_description = deb822.Changes(codecs.open(changes_file,encoding='utf-8'))
     source_name = package_description['Source']
     version_package = package_description['Version']
+    distribution = package_description['Distribution']
     auth = (user, passw)
     print("ejecutando la tarea de {0} en {1}".format(changes_file, autobuilder_instance) )
-    parameters = [('PACKAGE_SOURCE',source_name),('VERSION',version_package),('BUILD_PATH',build_path)]
+    parameters = [('PACKAGE_SOURCE',source_name),('VERSION',version_package),('BUILD_PATH',build_path),('DISTRIBUTION',distribution)]
     build = requests.post('{0}/job/{1}/buildWithParameters'.format(server_url,autobuilder_instance), auth=auth, headers=headers,data=parameters)
 
 def on_close_file(event):
