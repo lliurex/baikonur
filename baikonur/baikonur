@@ -57,7 +57,7 @@ def jobs_autobuilder(headers):
     return jobs
 
 def run_build(headers, autobuilder_instance, build_path):
-    changes_file = glob.glob(os.path.join(build_path,'*.dsc'))[0]
+    changes_file = glob.glob(os.path.join(build_path,'*.changes'))[0]
     package_description = deb822.Changes(codecs.open(changes_file,encoding='utf-8'))
     source_name = package_description['Source']
     version_package = package_description['Version']
