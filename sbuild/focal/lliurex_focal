@@ -5,4 +5,4 @@ root-groups=root,sbuild
 profile=sbuild
 type=directory
 directory=/sbuild/focal-amd64
-union-type=none
+union-type=overlay

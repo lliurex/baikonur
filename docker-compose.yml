@@ -50,6 +50,8 @@ services:
         source: jenkins_config
         target: /var/jenkins_home
     restart: always
+    environment:
+      - TZ=Europe/Madrid
     networks:
       autobuildnet:
         aliases:
