@@ -3,7 +3,7 @@ import deb822
 import sys
 import codecs
 changes = deb822.Changes(codecs.open(sys.argv[1],encoding='utf-8'))
-if changes['Distribution'] == 'bionic':
+if changes['Distribution'].startswith('bionic'):
     print('lliurex19')
-else:
+elif changes['Distribution'].startswith('focal'):
     print('lliurex21')
