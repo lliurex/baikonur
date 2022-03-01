@@ -7,3 +7,5 @@ if changes['Distribution'].startswith('bionic'):
     print('lliurex19')
 elif changes['Distribution'].startswith('focal'):
     print('lliurex21')
+elif changes['Distribution'].startswith('lliurex22'):
+    print('lliurex22')

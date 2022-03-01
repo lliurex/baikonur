@@ -35,7 +35,15 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>cd /srv/repository/baikonur/${DISTRIBUTION%%-*}/unstable
+	    <command>cd /srv/repository/baikonur/${DISTRIBUTION%%-*}/unstable
+case ${DISTRIBUTION} in
+	lliurex22)
+    		REPO="focal"
+    	;;
+    	*)
+    		REPO=${DISTRIBUTION}
+    	;;
+esac
 sudo reprepro includedeb ${DISTRIBUTION} ${BUILD_PATH}/*.deb
 sudo reprepro export ${DISTRIBUTION}
 </command>

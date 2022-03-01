@@ -1,0 +1,6 @@
+deb [trusted=yes] http://webrepo/ubuntu/focal focal main restricted universe multiverse
+deb [trusted=yes] http://webrepo/ubuntu/focal focal-updates main restricted universe multiverse
+deb [trusted=yes] http://webrepo/ubuntu/focal focal-security main restricted universe multiverse
+deb [trusted=yes] http://webrepo/baikonur/focal/unstable focal main
+deb [trusted=yes] http://webrepo/baikonur/lliurex22/unstable focal main
+deb [trusted=yes] http://webrepo/neon/lliurex22 focal main
