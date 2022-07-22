@@ -1,4 +1,4 @@
-FROM lliurex/sbuild:lliurex22
+FROM lliurex/sbuild:lliurex23
 COPY ./sbuild/getbuildfile /usr/bin
 COPY ./sbuild/get_chroot_build /usr/bin
 COPY ./sbuild/main_loop /usr/bin
@@ -9,10 +9,12 @@ COPY jenkins_user /
 COPY ./sbuild/bionic/lliurex_bionic /etc/schroot/chroot.d/
 COPY ./sbuild/focal/lliurex_focal /etc/schroot/chroot.d/
 COPY ./sbuild/lliurex22/lliurex_lliurex22 /etc/schroot/chroot.d/
+COPY ./sbuild/lliurex22/lliurex_jammy /etc/schroot/chroot.d/
 COPY ./sbuild/04tmpfs /etc/schroot/setup.d/
 COPY ./sbuild/bionic/sources.list /sbuild/bionic-amd64/etc/apt/
 COPY ./sbuild/focal/sources.list /sbuild/focal-amd64/etc/apt/
 COPY ./sbuild/lliurex22/sources.list /sbuild/lliurex22-amd64/etc/apt/
+COPY ./sbuild/jammy/sources.list /sbuild/jammy-amd64/etc/apt/
 RUN mkdir -p /var/run/sshd
 RUN chmod +x /usr/bin/main_loop
 RUN chmod +x /usr/bin/stop_loop

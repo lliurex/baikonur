@@ -1,0 +1,5 @@
+deb [trusted=yes] http://webrepo/ubuntu/jammy jammy main restricted universe multiverse
+deb [trusted=yes] http://webrepo/ubuntu/jammy jammy-updates main restricted universe multiverse
+deb [trusted=yes] http://webrepo/ubuntu/jammy jammy-security main restricted universe multiverse
+deb [trusted=yes] http://webrepo/baikonur/jammy/unstable jammy main
+deb [trusted=yes] http://webrepo/neon/jammy jammy main

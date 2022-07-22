@@ -1,0 +1,8 @@
+[lliurex23]
+description=Debian focal/amd64 autobuilder
+groups=root,sbuild
+root-groups=root,sbuild
+profile=sbuild
+type=directory
+directory=/sbuild/jammy-amd64
+union-type=overlay
