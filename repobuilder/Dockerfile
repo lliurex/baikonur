@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:latest
 RUN apt update; apt install -y sudo reprepro openssh-server openjdk-8-jdk 
 COPY repobuilder/distributions /usr/share/repobuilder/
 COPY jenkins_pass /
