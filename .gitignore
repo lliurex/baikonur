@@ -1,5 +1,6 @@
-jenkins_user
-jenkins_pass
-isomaker_path
+secrets/jenkins_user
+secrets/jenkins_pass
 isos_path
-packagesconfig
+secrets/packagesconfig
+secrets/telegram_token
+secrets/telegram_chat_id
