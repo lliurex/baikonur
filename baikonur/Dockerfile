@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:latest
 WORKDIR /app
 COPY baikonur ./
 RUN apt update && apt install -y \

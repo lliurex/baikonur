@@ -11,7 +11,7 @@ import pyinotify
 import time
 import datetime
 import queue
-import deb822
+import debian.deb822 as deb822
 import os
 import shutil
 import tempfile
@@ -57,7 +57,12 @@ def jobs_autobuilder(jenkins_server):
     return [job['name'] for job in jenkins_server.get_jobs() if job['name'].startswith(job_name) ]
 
 def run_build(jenkins_server, autobuilder_instance, build_path):
-    changes_file = glob.glob(os.path.join(build_path,'*.changes'))[0]
+    list_changes = glob.glob(os.path.join(build_path,'*.changes'))
+    list_baikonur = glob.glob(os.path.join(build_path,'*.baikonur'))
+    if len(list_baikonur) > 0:
+        changes_file = list_baikonur[0]
+    else:
+        changes_file = list_changes[0]
     package_description = deb822.Changes(codecs.open(changes_file,encoding='utf-8'))
     source_name = package_description['Source']
     version_package = package_description['Version']
@@ -104,7 +109,15 @@ def main():
             name=incoming_files.get()
             
             #check extension
-            if (name.endswith(".changes")):
+            if name.endswith(".baikonur"):
+                pkg={}
+                pkg["files"] = [(name.replace('.baikonur',''),True,"")]
+                pkg["urgency"] = 3
+                print("* new baikonur package: "+ name )
+                incoming_packages[name] = pkg
+
+
+            elif (name.endswith(".changes")):
                 pkg={}
                 pkg["files"]=[]
                 
@@ -160,6 +173,8 @@ def main():
             for key in tmp_packages:
                 incoming_packages.pop(key)
 
+        if outgoing_packages.qsize()>0:
+            print(folder_temp)
         #raul part
         if (outgoing_packages.qsize()>0):
             found = False
