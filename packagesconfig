@@ -1,5 +1,0 @@
-{
-    "url_base": "http://192.168.1.1/baikonur/bionic/stable/",
-    "search_path": "dists",
-    "pool_path": "environment"
-}
