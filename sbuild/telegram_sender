@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+import telegram
+import sys
+import glob
+import pathlib
+import os
+
+with open('/run/secrets/telegram-token','r') as fd:
+    bot = telegram.Bot(token=fd.readline().strip())
+
+with open('/run/secrets/telegram-chat-id','r') as fd:
+    chat_id = fd.readline().strip()
+
+def saluda():
+    bot.sendMessage(chat_id=chat_id,text="----------------------------------------------------------------")
+
+def info(package):
+    bot.sendMessage(chat_id=chat_id, text='\U0001F3C1 '+ package + " aceptado" )
+
+def built(package, build_file):
+    p = pathlib.Path(build_file).joinpath("baikonur_state_build")
+    content = 'not exists'
+    if p.exists():
+        with open(str(p), 'r') as fd:
+            content = fd.readlines()[0].strip()
+    else:
+        bot.sendMessage(chat_id=chat_id, text = '\U0001F6A8 Contacta con el administrador: ' + package )
+        return
+    if content == "exists":
+        bot.sendMessage(chat_id=chat_id, text = '\U0001F198 '+ package +' ya existe')
+        return
+    elif content == "chroot":
+        bot.sendMessage(chat_id=chat_id, text = '\U00002753 '+ package +' Distro equivocada')
+        return
+
+
+    
+    if content == "true" :
+        estado = '\U00002705'
+    else:
+        estado = '\U0000274C'
+    log_file = glob.glob(build_file+"/*.build")[0]
+    bot.sendDocument(chat_id,open(log_file,'rb'),caption=package + ":" + estado)
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2 :
+        saluda()
+        sys.exit()
+    action = sys.argv[1]
+    if action == "prepare":
+        package = sys.argv[2]
+        info(package)
+    elif action == "built":
+        package = sys.argv[2]
+        build_log = sys.argv[3]
+        built(package,build_log)
+    else:
+        saluda()

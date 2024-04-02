@@ -1,10 +1,17 @@
 from flask import Flask, request, escape, render_template, Response
 from packageFinder import PackageFinder
 import json
-
+import subprocess as s
 application = Flask(__name__)
 configuration = json.load(open('/run/secrets/packagesconfig','r'))
 application.config['JSON_AS_ASCII'] = False
+
+@application.route("/build/",methods=['POST'])
+def build():
+    p=s.Popen("/usr/bin/clone_github_repo {repo} {branch}".format(repo=request.form["repo"],branch=request.form["branch"]),shell=True,stdout=s.PIPE, stderr=s.PIPE )
+    (stdout,stderr)=p.communicate()
+    return "Cloned github repo " + str(request.form["repo"])+"#"+request.form["branch"]
+
 
 @application.route("/find/")
 def index():

@@ -1,6 +1,10 @@
-FROM ubuntu:18.04
+FROM ubuntu:latest
 
-RUN apt update; apt install -y python3 devscripts python3-debian python3-flask gunicorn3
+#RUN apt update; apt install -y python3 devscripts python3-debian python3-flask gunicorn3
+RUN apt update; apt install -y python3 python3-debian python3-flask gunicorn3
+RUN apt install -y tzdata
+RUN apt install -y git
+RUN apt install -y devscripts
 WORKDIR /app
 COPY packageFinder.py .
 COPY packagesbaikonur.py .

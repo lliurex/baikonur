@@ -1,20 +1,5 @@
 version: '3.7'
 services:
-  inbox:
-    container_name: inbox_service
-    image: inbox
-    build:
-      context: ./ssh
-    ports:
-      - "20:22"
-    volumes:
-      - type: volume
-        source: inbox_folder
-        target: /inbox
-    restart: always
-    networks:
-      - inboxnet
-
   baikonur:
     container_name: baikonur_service
     tty: true
@@ -114,22 +99,30 @@ services:
         aliases:
           - packages
           - find
+          - build
     secrets:
       - packagesconfig
+    
     volumes:
       - type: volume
         source: repository
         target: /app/environment/
         read_only: true
+      - type: volume
+        source: inbox_folder
+        target: /srv/autobuildinbox
 
   sbuild_1:
     container_name: sbuild_1_service
-    image: sbuild_lliurex19
+    image: sbuild_lliurex23
     build:
       context: .
       dockerfile: sbuild/Dockerfile
     restart: always
     privileged: true
+    secrets:
+      - telegram-token
+      - telegram-chat-id
     volumes:
       - type: volume
         source: build_folder
@@ -147,12 +140,15 @@ services:
 
   sbuild_2:
     container_name: sbuild_2_service
-    image: sbuild_lliurex19
+    image: sbuild_lliurex23
     build:
       context: .
       dockerfile: sbuild/Dockerfile
     restart: always
     privileged: true
+    secrets:
+      - telegram-token
+      - telegram-chat-id
     volumes:
       - type: volume
         source: build_folder
@@ -167,52 +163,6 @@ services:
       autobuildnet:
         aliases:
           - sbuild_2
-
-  sbuild_3:
-    container_name: sbuild_3_service
-    image: sbuild_lliurex19
-    build:
-      context: .
-      dockerfile: sbuild/Dockerfile
-    restart: always
-    privileged: true
-    volumes:
-      - type: volume
-        source: build_folder
-        target: /srv/autobuildfolder
-      - type: volume
-        source: logs_folder
-        target: /buildlogs/
-    networks:
-      webnet:
-        aliases:
-          - sbuild_3
-      autobuildnet:
-        aliases:
-          - sbuild_3
-
-  sbuild_4:
-    container_name: sbuild_4_service
-    image: sbuild_lliurex19
-    build:
-      context: .
-      dockerfile: sbuild/Dockerfile
-    restart: always
-    privileged: true
-    volumes:
-      - type: volume
-        source: build_folder
-        target: /srv/autobuildfolder
-      - type: volume
-        source: logs_folder
-        target: /buildlogs/
-    networks:
-      webnet:
-        aliases:
-          - sbuild_4
-      autobuildnet:
-        aliases:
-          - sbuild_4
 
 volumes:
   jenkins_config:
@@ -238,8 +188,12 @@ networks:
         - subnet: "10.0.2.0/28"
 secrets:
   jenkins-user:
-    file: ./jenkins_user
+    file: secrets/jenkins_user
   jenkins-pass:
-    file: ./jenkins_pass
+    file: secrets/jenkins_pass
+  telegram-token:
+    file: secrets/telegram_token
+  telegram-chat-id:
+    file: secrets/telegram_chat_id
   packagesconfig:
-    file: ./packagesconfig
+    file: secerts/packagesconfig

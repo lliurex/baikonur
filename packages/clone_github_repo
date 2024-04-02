@@ -1,0 +1,11 @@
+#!/bin/bash
+repo=$1
+shift
+branch=$1
+shift
+cd /srv/autobuildinbox
+git clone https://github.com/$repo
+cd */
+git checkout $branch
+cd ..
+dpkg-parsechangelog -l */debian/changelog > ${repo##*\/}.baikonur
