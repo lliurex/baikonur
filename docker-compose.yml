@@ -29,6 +29,20 @@ services:
       autobuildnet:
         aliases:
           - redis_server
+  jobs:
+    container_name: jobs_service
+    image: jobs
+    restart: always
+    build:
+      context: .
+      dockerfile: jobs/Dockerfile
+    networks:
+      autobuildnet:
+        aliases:
+          - jobs
+      webnet:
+        aliases:
+          - jobs
 
   repobuilder:
     container_name: repobuilder_service
