@@ -18,32 +18,17 @@ services:
       autobuildnet:
         aliases:
           - baikonur
-    secrets:
-      - jenkins-user
-      - jenkins-pass
 
-
-  jenkins:
-    container_name: jenkins_service
-    image: autobuild_jenkins
-    build:
-      context: jenkins
-    ports:
-      - "443:8080"
-    volumes:
-      - type: volume
-        source: jenkins_config
-        target: /var/jenkins_home
+  redis:
+    container_name: redis_server
+    image: redis
     restart: always
     environment:
       - TZ=Europe/Madrid
     networks:
       autobuildnet:
         aliases:
-          - jenkins_service 
-    secrets:
-      - jenkins-user
-      - jenkins-pass
+          - redis_server
 
   repobuilder:
     container_name: repobuilder_service
@@ -89,7 +74,6 @@ services:
   
   packagesfinder:
     container_name: packages_service
-    image: packages
     restart: always
     image: packages
     build:
@@ -114,7 +98,7 @@ services:
 
   sbuild_1:
     container_name: sbuild_1_service
-    image: sbuild_lliurex23
+    image: sbuild_lliurex25
     build:
       context: .
       dockerfile: sbuild/Dockerfile
@@ -140,7 +124,7 @@ services:
 
   sbuild_2:
     container_name: sbuild_2_service
-    image: sbuild_lliurex23
+    image: sbuild_lliurex25
     build:
       context: .
       dockerfile: sbuild/Dockerfile
@@ -165,7 +149,6 @@ services:
           - sbuild_2
 
 volumes:
-  jenkins_config:
   inbox_folder:
   build_folder:
   logs_folder:
@@ -187,13 +170,9 @@ networks:
       config:
         - subnet: "10.0.2.0/28"
 secrets:
-  jenkins-user:
-    file: secrets/jenkins_user
-  jenkins-pass:
-    file: secrets/jenkins_pass
   telegram-token:
     file: secrets/telegram_token
   telegram-chat-id:
     file: secrets/telegram_chat_id
   packagesconfig:
-    file: secerts/packagesconfig
+    file: secrets/packagesconfig

@@ -1,2 +1,0 @@
-#!/bin/bash
-kill -2 $(ps aux | grep -v grep |grep sshd | awk '{print $2}')

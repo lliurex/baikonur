@@ -1,8 +1,0 @@
-#!/usr/bin/env python3
-import signal
-
-def signal_handler(signal_number, frame):
-    print("Proceed ...")
-
-signal.signal(signal.SIGINT, signal_handler)
-signal.pause()

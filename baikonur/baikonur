@@ -17,23 +17,14 @@ import shutil
 import tempfile
 import glob
 import codecs
-import jenkins
+from celery import Celery
 
-user = 'adminuser'
-passw = 'password'
-
-with open('/run/secrets/jenkins-user','r') as fd:
-    user = fd.readline().strip()
-
-with open('/run/secrets/jenkins-pass','r') as fd:
-    passw = fd.readline().strip()
-
-auth = (user,passw)
-job_name = 'autobuild_'
-server_url = 'http://jenkins_service:8080/'
-jobs = []
-queue_available = []
-
+celery = Celery(
+        __name__,
+        broker="redis://redis_server:6379/0",
+        backend="redis://redis_server:6379/0",
+        task_routes={"build_package":"sbuild"}
+        )
 
 INBOX="/srv/autobuildinbox"
 BUILD="/srv/autobuildfolder"
@@ -44,19 +35,11 @@ incoming_packages={}
 unknown_files=[]
 outgoing_packages=queue.PriorityQueue()
 
-def get_server():
-    return jenkins.Jenkins(server_url,username=user,password=passw)
+@celery.task(name="build_package")
+def build_package(source_name, version_package, build_path, distribution, upstream):
+    pass
 
-'''
-def get_auth_tokens():
-    crumb = requests.get('http://{0}:{1}@jenkins_service:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'.format(user,passw)).text
-    return {'Jenkins-Crumb':crumb.split(':')[1]}
-'''
-
-def jobs_autobuilder(jenkins_server):
-    return [job['name'] for job in jenkins_server.get_jobs() if job['name'].startswith(job_name) ]
-
-def run_build(jenkins_server, autobuilder_instance, build_path):
+def run_build(build_path):
     list_changes = glob.glob(os.path.join(build_path,'*.changes'))
     list_baikonur = glob.glob(os.path.join(build_path,'*.baikonur'))
     if len(list_baikonur) > 0:
@@ -67,9 +50,8 @@ def run_build(jenkins_server, autobuilder_instance, build_path):
     source_name = package_description['Source']
     version_package = package_description['Version']
     distribution = package_description['Distribution']
-    print("ejecutando la tarea de {0} en {1}".format(changes_file, autobuilder_instance) )
-    parameters = {'PACKAGE_SOURCE':source_name,'VERSION':version_package,'BUILD_PATH':build_path,'DISTRIBUTION':distribution}
-    jenkins_server.build_job(autobuilder_instance,parameters)
+    upstream = package_description['Upstream'] if 'Upstream' in package_description.keys() else None
+    build_package.delay(source_name, version_package, build_path, distribution, upstream)
 
 def on_close_file(event):
     
@@ -177,36 +159,8 @@ def main():
             print(folder_temp)
         #raul part
         if (outgoing_packages.qsize()>0):
-            found = False
-            jobs = []
-            queue_available = []	
-            j_server = get_server()
-            jobs = jobs_autobuilder(j_server)
-            for job in jobs:
-                job_info = j_server.get_job_info(job)
-                if not job_info['buildable']:
-                    continue
-                # Get status last job
-                if len(job_info['builds']) > 0:
-                    build = j_server.get_build_info(job, job_info['lastBuild']['number'])
-                    if not build['building'] and job_info['queueItem'] is None:
-                        print('{0} esta libre'.format(job))
-                        pkg=outgoing_packages.get()
-                        found = True
-                        run_build(j_server, job, os.path.join(INBOX,pkg[1]))
-                        break
-                else:
-                    print('{0} esta libre'.format(job))
-                    pkg=outgoing_packages.get()
-                    run_build(j_server, job, os.path.join(INBOX,pkg[1]))
-                    found = True
-                    break
-                if job_info['queueItem'] is None or ( not build['building'] and not job_info['queueItem'] is None ):
-                    queue_available.append(job)
-            if len(queue_available) >= 1 and not found:
-                print("Encolamos el trabajo en {0}".format(queue_available[0]))
-                pkg=outgoing_packages.get()
-                run_build(j_server, queue_available[0], os.path.join(INBOX,pkg[1]))
+            pkg=outgoing_packages.get()
+            run_build(os.path.join(INBOX,pkg[1]))
             
         time.sleep(3.0)
         

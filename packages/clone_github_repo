@@ -8,4 +8,9 @@ git clone https://github.com/$repo
 cd */
 git checkout $branch
 cd ..
-dpkg-parsechangelog -l */debian/changelog > ${repo##*\/}.baikonur
+upstream=$1
+if [ "$upstream" != "" ]; then
+	echo "Upstream: $upstream" >> ${repo##*\/}.temp
+fi
+dpkg-parsechangelog -l */debian/changelog >> ${repo##*\/}.temp
+cat ${repo##*\/}.temp > ${repo##*\/}.baikonur  

@@ -6,14 +6,19 @@ application = Flask(__name__)
 configuration = json.load(open('/run/secrets/packagesconfig','r'))
 application.config['JSON_AS_ASCII'] = False
 
-@application.route("/build/",methods=['POST'])
+@application.route("/build/",methods=['POST'],strict_slashes=False)
 def build():
-    p=s.Popen("/usr/bin/clone_github_repo {repo} {branch}".format(repo=request.form["repo"],branch=request.form["branch"]),shell=True,stdout=s.PIPE, stderr=s.PIPE )
+    repo = request.form.get('repo')
+    branch = request.form.get('branch')
+    upstream = request.form.get('upstream','')
+    p = s.Popen( "/usr/bin/clone_github_repo {repo} {branch} {upstream}".format(repo=repo,branch=branch,upstream=upstream), shell=True, stdout=s.PIPE, stderr=s.PIPE )
     (stdout,stderr)=p.communicate()
-    return "Cloned github repo " + str(request.form["repo"])+"#"+request.form["branch"]
+    result = "Github request: \n  Repo : " + str(request.form["repo"])+"\n  Branch : "+request.form["branch"] +"\n" 
+    if upstream != '':
+        result += '  Upstream : ' + upstream + "\n"
+    return result
 
-
-@application.route("/find/")
+@application.route("/find/",strict_slashes=False)
 def index():
     return render_template("search.html")
 

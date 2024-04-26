@@ -1,0 +1,5 @@
+deb [trusted=yes] http://webrepo/ubuntu/noble noble main restricted universe multiverse
+deb [trusted=yes] http://webrepo/ubuntu/noble noble-updates main restricted universe multiverse
+deb [trusted=yes] http://webrepo/ubuntu/noble noble-security main restricted universe multiverse
+deb [trusted=yes] http://webrepo/baikonur/noble/unstable noble main
+deb [trusted=yes] http://webrepo/neon/noble noble main

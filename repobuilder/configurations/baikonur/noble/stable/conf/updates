@@ -1,0 +1,23 @@
+Name: baikonur
+Method: file:///srv/repository/baikonur/noble/unstable
+Suite: noble
+Components: main
+UDebComponents: main
+Architectures: amd64
+VerifyRelease: blindtrust
+
+Name: baikonur-updates
+Method: file:///srv/repository/baikonur/noble/unstable
+Suite: noble-updates
+Components: main
+UDebComponents: main
+Architectures: amd64
+VerifyRelease: blindtrust
+
+Name: baikonur-security
+Method: file:///srv/repository/baikonur/noble/unstable
+Suite: noble-security
+Components: main
+UDebComponents: main
+Architectures: amd64
+VerifyRelease: blindtrust

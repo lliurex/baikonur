@@ -1,0 +1,8 @@
+[lliurex25]
+description=Debian noble/amd64 autobuilder
+groups=root,sbuild
+root-groups=root,sbuild
+profile=sbuild
+type=directory
+directory=/sbuild/noble-amd64
+union-type=overlay

@@ -1,11 +1,12 @@
 #!/bin/bash
-
+mkdir /srv/repository || true
 for x in $(ls /usr/share/baikonur); do
     if [ ! -d $x ]; then
-        cp -r /usr/share/baikonur/$x .
-        chmod -R g+s $x
-        chown -R :www-data $x
+        cp -r /usr/share/baikonur/$x /srv/repository/
+        chmod -R g+s /srv/repository/$x
+        chown -R :www-data /srv/repository/$x
     fi
 done
 
-/usr/sbin/sshd -D
+find /srv/repository/baikonur -iname unstable -exec bash -c 'cd $0; reprepro -v export' {} \;
+/usr/bin/celery -A worker.celery worker -Q "repobuilder"

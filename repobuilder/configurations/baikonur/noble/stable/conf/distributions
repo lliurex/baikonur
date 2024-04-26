@@ -1,0 +1,29 @@
+Codename: noble                                                                                                                                                                             
+Version: 25.05
+Origin: LliureX
+Label: LliureX
+Description: LliureX Distribution Packages
+Architectures: i386 amd64 source
+Components: main
+UDebComponents: main
+Update: - baikonur
+
+Codename: noble-updates
+Version: 25.05
+Origin: LliureX
+Label: LliureX
+Description: LliureX Distribution Packages
+Architectures: i386 amd64 source
+Components: main
+UDebComponents: main
+Update: - baikonur-updates
+
+Codename: noble-security
+Version: 25.05
+Origin: LliureX
+Label: LliureX
+Description: LliureX Distribution Packages
+Architectures: i386 amd64 source
+Components: main
+UDebComponents: main
+Update: - baikonur-security

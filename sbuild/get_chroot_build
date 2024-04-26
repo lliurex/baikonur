@@ -11,5 +11,7 @@ elif changes['Distribution'].startswith('lliurex22'):
     print('lliurex22')
 elif changes['Distribution'].startswith('jammy'):
     print('lliurex23')
+elif changes['Distribution'].startswith('noble'):
+    print('lliurex25')
 else:
     sys.exit(1)
