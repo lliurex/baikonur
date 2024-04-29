@@ -48,6 +48,7 @@ services:
     container_name: repobuilder_service
     image: repobuilder
     restart: always
+    hostname: Nodo1
     build:
       context: .
       dockerfile: repobuilder/Dockerfile
@@ -113,6 +114,7 @@ services:
   sbuild_1:
     container_name: sbuild_1_service
     image: sbuild_lliurex25
+    hostname: Nodo1
     build:
       context: .
       dockerfile: sbuild/Dockerfile
@@ -139,6 +141,7 @@ services:
   sbuild_2:
     container_name: sbuild_2_service
     image: sbuild_lliurex25
+    hostname: Nodo2
     build:
       context: .
       dockerfile: sbuild/Dockerfile

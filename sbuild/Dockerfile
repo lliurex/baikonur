@@ -16,4 +16,4 @@ COPY ./sbuild/telegram_sender.py .
 RUN chmod a+rx /etc/schroot/setup.d/04tmpfs
 RUN apt update; apt install -y python3 openssh-server git python3-pip celery python3-celery python3-redis python3-requests
 run pip3 install python-telegram-bot flower --break-system-packages
-CMD /usr/bin/celery -A worker.celery worker -Q sbuild 
+CMD /usr/bin/celery -A worker.celery worker -Q sbuild -n sbuild_%h

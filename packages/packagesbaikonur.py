@@ -1,4 +1,4 @@
-from flask import Flask, request, escape, render_template, Response
+from flask import Flask, request, render_template
 from packageFinder import PackageFinder
 import json
 import subprocess as s

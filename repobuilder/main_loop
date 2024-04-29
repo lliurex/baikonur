@@ -9,4 +9,4 @@ for x in $(ls /usr/share/baikonur); do
 done
 
 find /srv/repository/baikonur -iname unstable -exec bash -c 'cd $0; reprepro -v export' {} \;
-/usr/bin/celery -A worker.celery worker -Q "repobuilder"
+/usr/bin/celery -A worker.celery worker -Q "repobuilder" -n repobuilder_%h
