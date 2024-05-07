@@ -58,7 +58,9 @@ def get_upstream_version( version_package ):
         return second
 
 def check_package_exists(source_name, distribution, version):
-
+    
+    if "testing" in distribution:
+        return False
     files = {'needle':(None,source_name),'repository':(None,'baikonur/'+distribution.split('-')[0]+'/unstable'),'source':(None,'yes'),'json':(None,'yes')}
     response = requests.post('http://find/find/search',files=files)  
     all_result = json.loads(response.content.decode('utf-8'))

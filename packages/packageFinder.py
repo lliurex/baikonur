@@ -18,6 +18,8 @@ class PackageFinder:
 
         global_result = []
         for release in list_distributions:
+            if "testing" in release:
+                continue
             if os.path.exists(os.path.join(xxx,release,'Release')):
                 index_file = deb822.Changes( codecs.open( os.path.join( xxx, release, 'Release' ), encoding='utf-8' ) )
 
