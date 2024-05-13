@@ -14,3 +14,4 @@ if [ "$upstream" != "" ]; then
 fi
 dpkg-parsechangelog -l */debian/changelog >> ${repo##*\/}.temp
 cat ${repo##*\/}.temp > ${repo##*\/}.baikonur  
+rm ${repo##*\/}.temp 
