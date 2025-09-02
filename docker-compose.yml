@@ -193,3 +193,5 @@ secrets:
     file: secrets/telegram_chat_id
   packagesconfig:
     file: secrets/packagesconfig
+  githubuser:
+    file: secrets/githubuser

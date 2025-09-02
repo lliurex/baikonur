@@ -4,3 +4,4 @@ isos_path
 secrets/packagesconfig
 secrets/telegram_token
 secrets/telegram_chat_id
+secrets/githubuser
