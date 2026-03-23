@@ -6,6 +6,8 @@ application = Flask(__name__)
 configuration = json.load(open('/run/secrets/packagesconfig','r'))
 application.config['JSON_AS_ASCII'] = False
 
+list_of_repos_supported = ["lliurex/", "edupals/"]
+
 @application.route("/build/tags",methods=['POST'],strict_slashes=False)
 def build_tags():
     try:
@@ -14,6 +16,8 @@ def build_tags():
         if "ref_type" in data and data["ref_type"] == 'tag':
             branch = data["ref"]
             repo = data["repository"]["full_name"]
+            if not repo.startswith(tuple(list_of_repos_supported)):
+                return ""
             p = s.Popen( "/usr/bin/clone_github_repo -r stable {repo} {branch}".format(repo=repo,branch=branch), shell=True, stdout=s.PIPE, stderr=s.PIPE )
             p.communicate()
     except json.JSONDecodeError:
@@ -24,6 +28,8 @@ def build_tags():
 def build():
     repo = request.form.get('repo')
     branch = request.form.get('branch')
+    if not repo.startswith(tuple(list_of_repos_supported)):
+        return ""
     p = s.Popen( "/usr/bin/clone_github_repo {repo} {branch}".format(repo=repo,branch=branch), shell=True, stdout=s.PIPE, stderr=s.PIPE )
     (stdout,stderr)=p.communicate()
     result = "Github request: \n  Repo : " + str(request.form["repo"])+"\n  Branch : "+request.form["branch"] +"\n" 
