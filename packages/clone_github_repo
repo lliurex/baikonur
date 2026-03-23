@@ -13,15 +13,13 @@ cd /srv/autobuildinbox
 git clone https://$(cat /run/secrets/githubuser)@github.com/$repo
 cd */
 git checkout $branch
-cd ..
-upstream=$1
-if [ "$upstream" != "" ]; then
-	cd */
+if [ -e "debian/source/upstream" ]; then
+	upstream=$(cat debian/source/upstream)
 	git checkout $upstream
 	git checkout $branch
-	cd ..
-	echo "Upstream: $upstream" >> ${repo##*\/}.temp
+	echo "Upstream: $upstream" >> ../${repo##*\/}.temp
 fi
+cd ..
 echo "Repository: $pool_repository" >> ${repo##*\/}.temp
 dpkg-parsechangelog -l */debian/changelog >> ${repo##*\/}.temp
 cat ${repo##*\/}.temp > ${repo##*\/}.baikonur

@@ -24,12 +24,9 @@ def build_tags():
 def build():
     repo = request.form.get('repo')
     branch = request.form.get('branch')
-    upstream = request.form.get('upstream','')
-    p = s.Popen( "/usr/bin/clone_github_repo {repo} {branch} {upstream}".format(repo=repo,branch=branch,upstream=upstream), shell=True, stdout=s.PIPE, stderr=s.PIPE )
+    p = s.Popen( "/usr/bin/clone_github_repo {repo} {branch}".format(repo=repo,branch=branch), shell=True, stdout=s.PIPE, stderr=s.PIPE )
     (stdout,stderr)=p.communicate()
     result = "Github request: \n  Repo : " + str(request.form["repo"])+"\n  Branch : "+request.form["branch"] +"\n" 
-    if upstream != '':
-        result += '  Upstream : ' + upstream + "\n"
     return result
 
 @application.route("/find/",strict_slashes=False)
