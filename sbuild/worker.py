@@ -17,7 +17,7 @@ celery = Celery(
                      'includedeb':'repobuilder'}
         )
 @celery.task(name='includedeb')
-def includedeb( distribution, buildpath ):
+def includedeb( distribution, buildpath, repository ):
     pass
 
 def telegram_send(state, package, build_file=''):
@@ -78,7 +78,7 @@ def get_changes_file( build_path):
     return changes
 
 @celery.task(name="build_package")
-def build_package(source_name, version_package, build_path, distribution, upstream):
+def build_package(source_name, version_package, build_path, distribution, repository, upstream):
     state = write_state(build_path, "info")
     telegram_send("info", source_name )
     package_path = None
@@ -111,7 +111,7 @@ def build_package(source_name, version_package, build_path, distribution, upstre
         if sbuild_process.returncode != 0:
             raise Exception()
         state = write_state(build_path, 'true')
-        includedeb.delay( distribution, build_path )
+        includedeb.delay( distribution, build_path, repository)
 
         # check result 
         # All ok -> call reprepro & telegram sender with build 

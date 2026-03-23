@@ -14,10 +14,10 @@ celery = Celery(
                      'includedeb':'repobuilder'}
         )
 @celery.task(name='includedeb')
-def includedeb( distribution, buildpath ):
+def includedeb( distribution, buildpath, repository ):
     if "testing" in distribution:
-        p = s.Popen('reprepro -C testing includedeb {distribution} {buildpath}/*.deb && reprepro export'.format( distribution=distribution, buildpath= buildpath ),shell=True, cwd='/srv/repository/baikonur/{}/unstable'.format(distribution.split("-")[0]))
+        p = s.Popen('reprepro -C testing includedeb {distribution} {buildpath}/*.deb && reprepro export'.format( distribution=distribution, buildpath= buildpath ),shell=True, cwd='/srv/repository/baikonur/{}/{}'.format(distribution.split("-")[0], repository ))
     else:
-        p = s.Popen('reprepro includedeb {distribution} {buildpath}/*.deb && reprepro export'.format( distribution=distribution, buildpath= buildpath ),shell=True, cwd='/srv/repository/baikonur/{}/unstable'.format(distribution.split("-")[0]))
+        p = s.Popen('reprepro includedeb {distribution} {buildpath}/*.deb && reprepro export'.format( distribution=distribution, buildpath= buildpath ),shell=True, cwd='/srv/repository/baikonur/{}/{}'.format(distribution.split("-")[0], repository))
     p.communicate()
 

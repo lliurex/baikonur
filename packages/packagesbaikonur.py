@@ -1,10 +1,24 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 from packageFinder import PackageFinder
 import json
 import subprocess as s
 application = Flask(__name__)
 configuration = json.load(open('/run/secrets/packagesconfig','r'))
 application.config['JSON_AS_ASCII'] = False
+
+@application.route("/build/tags",methods=['POST'],strict_slashes=False)
+def build_tags():
+    try:
+        # Leer el payload directamente y parsearlo
+        data = request.json
+        if "ref_type" in data and data["ref_type"] == 'tag':
+            branch = data["ref"]
+            repo = data["repository"]["full_name"]
+            p = s.Popen( "/usr/bin/clone_github_repo -r stable {repo} {branch}".format(repo=repo,branch=branch), shell=True, stdout=s.PIPE, stderr=s.PIPE )
+            p.communicate()
+    except json.JSONDecodeError:
+        application.logger.error("ha fallado")
+    return ""
 
 @application.route("/build/",methods=['POST'],strict_slashes=False)
 def build():

@@ -36,7 +36,7 @@ unknown_files=[]
 outgoing_packages=queue.PriorityQueue()
 
 @celery.task(name="build_package")
-def build_package(source_name, version_package, build_path, distribution, upstream):
+def build_package(source_name, version_package, build_path, distribution, repository, upstream):
     pass
 
 def run_build(build_path):
@@ -50,8 +50,9 @@ def run_build(build_path):
     source_name = package_description['Source']
     version_package = package_description['Version']
     distribution = package_description['Distribution']
+    repository = package_description['Repository']
     upstream = package_description['Upstream'] if 'Upstream' in package_description.keys() else None
-    build_package.delay(source_name, version_package, build_path, distribution, upstream)
+    build_package.delay(source_name, version_package, build_path, distribution, repository, upstream)
 
 def on_close_file(event):
     

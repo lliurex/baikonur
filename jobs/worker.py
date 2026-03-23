@@ -8,7 +8,7 @@ celery = Celery(
                      'includedeb':'repobuilder'}
         )
 @celery.task(name='includedeb')
-def includedeb( distribution, buildpath ):
+def includedeb( distribution, buildpath, repository ):
     pass
 
 @celery.task(name="build_package")

@@ -1,4 +1,10 @@
 #!/bin/bash
+pool_repository="unstable"
+if [ "$1" = "-r" ]; then
+	shift
+	pool_repository=$1
+	shift
+fi
 repo=$1
 shift
 branch=$1
@@ -16,6 +22,7 @@ if [ "$upstream" != "" ]; then
 	cd ..
 	echo "Upstream: $upstream" >> ${repo##*\/}.temp
 fi
+echo "Repository: $pool_repository" >> ${repo##*\/}.temp
 dpkg-parsechangelog -l */debian/changelog >> ${repo##*\/}.temp
 cat ${repo##*\/}.temp > ${repo##*\/}.baikonur
 rm ${repo##*\/}.temp
